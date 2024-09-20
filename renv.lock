@@ -9,6 +9,11 @@
     ]
   },
   "Packages": {
+    "devtools": {
+      "Package": "devtools",
+      "Version": "2.4.5",
+      "Source": "Repository"
+    },
     "renv": {
       "Package": "renv",
       "Version": "1.0.7",
