@@ -1,0 +1,11 @@
+Package: UMET
+Type: Package
+Title: Utility-Based Dose Optimization Approach for Multiple-Dose Randomized Trial Designs (U-MET)
+Version: 0.1.0
+Author: Gina D'Angelo
+Maintainer: The package maintainer is Gina D'Angelo <gina.dangelo@astrazeneca.com>
+Description: U-MET compares randomized doses with a utility-based approach accounting for safety and efficacy. The approach compares two randomized doses by extending the BOIN12 approach to use the standardized utility scores in a hypothesis testing framework, where a frequentist and Bayesian inference are evaluated to compare the mean utilities across doses and identify the OBD. The U-MET package includes the approaches from the U-MET paper (D’Angelo et al. 2024). Another feature added is to check is the dose is admissible.
+License: "Prairie Trillium" Release
+Encoding: UTF-8
+LazyData: true
+RoxygenNote: 7.3.2
