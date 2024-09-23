@@ -15,7 +15,8 @@ jobs:
       GITHUB_PAT: ${{ secrets.GITHUB_TOKEN }}
       DEPLOY_HOST: ${{ secrets.DEPLOY_HOST }}
       SSH_UN: ${{ secrets.SSH_UN }}
-      REMOTE_MINICRAN: /projects/dsai/se_aa/statistical_innovation/minicran
+      # note trailing slash at the end of directory so rsync copies contents
+      REMOTE_MINICRAN: /projects/dsai/se_aa/statistical_innovation/minicran/
       REMOTE_RENV_CACHE: /projects/dsai/se_aa/statistical_innovation/github_renv_cache
       RENV_PATHS_CACHE: ~/.renv_cache
       RENV_CONFIG_CACHE_SYMLINKS: false
@@ -103,6 +104,7 @@ jobs:
         run: |
           rsync -avz -e "ssh -i /home/runner/.ssh/github_actions" \
             $SSH_UN@$DEPLOY_HOST:$REMOTE_MINICRAN ~/.minicran
+          ls ~/.minicran
           cat ~/.minicran/src/contrib/PACKAGES
 
       
