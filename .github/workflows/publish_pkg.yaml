@@ -38,10 +38,10 @@ jobs:
           echo "Acquire::http::Proxy \"$http_proxy\";" | sudo tee -a /etc/apt/apt.conf
           echo "Acquire::https::Proxy \"$https_proxy\";" | sudo tee -a /etc/apt/apt.conf
       - uses: actions/checkout@v4
-       - name: cache ssh 
-         id: cache-ssh
-         uses: actions/cache@v3
-         with: 
+      - name: cache ssh 
+        id: cache-ssh
+        uses: actions/cache@v3
+        with: 
           path: ~/.ssh
           key: ${{ runner.os }}-sshsetup-${{ secrets.ssh_UN }}
       - name: setup ssh creds
