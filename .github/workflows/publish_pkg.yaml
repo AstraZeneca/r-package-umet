@@ -44,7 +44,7 @@ jobs:
           echo "${{ secrets.SSH_KEY }}" > /home/runner/.ssh/github_actions
           chmod 600 /home/runner/.ssh/github_actions
           ssh-keyscan -H $DEPLOY_HOST >> /home/runner/.ssh/known_hosts
-          cat /home/runner/.ssh/known_hosts
+          # cat /home/runner/.ssh/known_hosts
           # ssh-agent -a $SSH_AUTH_SOCK > /dev/null	
           # ssh-add /home/runner/.ssh/github_actions
           
