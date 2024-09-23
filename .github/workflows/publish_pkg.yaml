@@ -49,12 +49,12 @@ jobs:
           # ssh-add /home/runner/.ssh/github_actions
           
 
-          ssh $SSH_UN@$DEPLOY_HOST -f 'touch test.txt'
+          ssh -i /home/runner/.ssh/github_actions -f 'touch test.txt' $SSH_UN@$DEPLOY_HOST 
       - name: test ssh creds
         env:
           SSH_AUTH_SOCK: /tmp/ssh_agent.sock
         run: |
-          ssh kctf809login.seml.scp.astrazeneca.net -f 'ls'
+          ssh kctf809@login.seml.scp.astrazeneca.net -f 'ls'
 
 
       # - name: setup mountpoint
