@@ -36,6 +36,11 @@ jobs:
           echo "Acquire::http::Proxy \"$http_proxy\";" | sudo tee -a /etc/apt/apt.conf
           echo "Acquire::https::Proxy \"$https_proxy\";" | sudo tee -a /etc/apt/apt.conf
       - uses: actions/checkout@v4
+      - name: setup ssh creds
+        run: |
+          echo "$var" > .ssh/id_ed25519
+          ssh login.seml.scp.astrazeneca.net -f 'ls'
+
       - name: setup mountpoint
         run: |
           sudo apt-get update
