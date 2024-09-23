@@ -26,21 +26,35 @@ jobs:
     permissions:
       contents: write
     steps:
-      - name: System info
-        run: cat /etc/os-release
-      - name: Ping localhost
-        run: |
-          ping -c 3 login.seml.scp.astrazeneca.net 
+      # - name: System info
+      #  run: cat /etc/os-release
+      # - name: Ping localhost
+      #   run: |
+      #     ping -c 3 login.seml.scp.astrazeneca.net 
       - name: Set up proxy environment variables
         run: |
           echo "Acquire::http::Proxy \"$http_proxy\";" | sudo tee -a /etc/apt/apt.conf
           echo "Acquire::https::Proxy \"$https_proxy\";" | sudo tee -a /etc/apt/apt.conf
       - uses: actions/checkout@v4
       - name: setup ssh creds
+        # https://maxschmitt.me/posts/github-actions-ssh-key
+        env:
+          SSH_AUTH_SOCK: /tmp/ssh_agent.sock
         run: |
-          mkdir .ssh
-          echo "$var" > .ssh/id_ed25519
+          mkdir -p /home/runner/.ssh
+          ssh-keyscan login.seml.scp.astrazeneca.net >> /home/runner/.ssh/known_hosts
+          echo "${{ secrets.SSH_KEY }}" > /home/runner/.ssh/github_actions
+          chmod 600 /home/runner/.ssh/github_actions
+          ssh-agent -a $SSH_AUTH_SOCK > /dev/null	
+          ssh-add /home/runner/.ssh/github_actions
+
           ssh login.seml.scp.astrazeneca.net -f 'ls'
+      - name: test ssh creds
+        env:
+          SSH_AUTH_SOCK: /tmp/ssh_agent.sock
+        run: |
+          ssh login.seml.scp.astrazeneca.net -f 'ls'
+
 
       # - name: setup mountpoint
       #   run: |
