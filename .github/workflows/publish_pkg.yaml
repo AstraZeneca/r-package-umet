@@ -63,7 +63,10 @@ jobs:
             -o IdentityFile=/home/runner/.ssh/github_actions
           ls /mnt/share_area
           sudo mkdir $RENV_PATHS_CACHE
-          
+          sudo sshfs \
+            $SSH_UN@$DEPLOY_HOST:$REMOTE_RENV_CACHE \
+            $RENV_PATHS_CACHE \
+            -o IdentityFile=/home/runner/.ssh/github_actions 
 
 
           
