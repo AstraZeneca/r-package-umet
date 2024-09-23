@@ -62,7 +62,9 @@ jobs:
             /mnt/share_area \
             -o IdentityFile=/home/runner/.ssh/github_actions
           ls /mnt/share_area
-          sudo mkdir /mnt/renv_cache
+          sudo mkdir $RENV_PATHS_CACHE
+          
+
 
           
 
