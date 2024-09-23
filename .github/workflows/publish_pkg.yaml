@@ -38,7 +38,9 @@ jobs:
       - uses: actions/checkout@v4
       - name: setup mountpoint
         run: |
-          which sshfs
+          sudo apt-get update
+          sudo apt-get install -y sshfs
+          which sshfs 
 
       - uses: r-lib/actions/setup-pandoc@v2
       - name: install dependencies
