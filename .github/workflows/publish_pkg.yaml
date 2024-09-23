@@ -54,17 +54,16 @@ jobs:
         run: |
           ssh $SSH_UN@$DEPLOY_HOST -i /home/runner/.ssh/github_actions -f 'touch test.txt' 
 
-
        - name: setup mountpoint
          run: |
            sudo apt-get update
            sudo apt-get install -y sshfs
            sudo mkdir /mnt/share_area
-           sudo sshfs \
-            $SSH_UN@$DEPLOY_HOST:/projects/dsai/se_aa/statistical_innovation/ \
-            /mnt/shared_area \
-            -o IdentityFile=/home/runner/.ssh/github_actions
-           ls /mnt/share_area
+          #  sudo sshfs \
+          #   $SSH_UN@$DEPLOY_HOST:/projects/dsai/se_aa/statistical_innovation/ \
+          #   /mnt/shared_area \
+          #   -o IdentityFile=/home/runner/.ssh/github_actions
+          #  ls /mnt/share_area
 
           
 
