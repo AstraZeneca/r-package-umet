@@ -102,7 +102,7 @@ jobs:
       - name: sync down minicran
         run: |
           rsync -avz -e "ssh -i /home/runner/.ssh/github_actions" \
-          $SSH_UN@$DEPLOY_HOST:$REMOTE_MINICRAN ~/.minicran \
+            $SSH_UN@$DEPLOY_HOST:$REMOTE_MINICRAN ~/.minicran
           cat ~/.minicran/src/contrib/PACKAGES
 
       
