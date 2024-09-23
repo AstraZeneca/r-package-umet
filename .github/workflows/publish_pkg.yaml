@@ -4,13 +4,18 @@ on:
   push:
     branches:
       - dev
+      - gh-workflow
   workflow_dispatch:
 
 jobs:
   publishpackage:
     runs-on: azu-oncology-rd-self-hosted-linux
+    environment: deploy-package
     env:
       GITHUB_PAT: ${{ secrets.GITHUB_TOKEN }}
+      SSH_KEY: ${{ secrets.SSH_KEY }}
+      SSH_PW: ${{ secrets.SSH_PW }}
+      SSH_UN: ${{ secrets.SSH_UN }}
       https_proxy: http://azpzen.astrazeneca.net:9480
       http_proxy: http://azpzen.astrazeneca.net:9480 
       no_proxy: localhost,127.0.0.1,127.0.0.2,.astrazeneca.net,astrazeneca.net    
@@ -31,18 +36,21 @@ jobs:
           echo "Acquire::http::Proxy \"$http_proxy\";" | sudo tee -a /etc/apt/apt.conf
           echo "Acquire::https::Proxy \"$https_proxy\";" | sudo tee -a /etc/apt/apt.conf
       - uses: actions/checkout@v4
+      - name: setup mountpoint
+        run: |
+          which sshfs
+
       - uses: r-lib/actions/setup-pandoc@v2
       - name: install dependencies
         run: |
           sudo apt-get update
-          sudo apt-get install -y libcurl4-openssl-dev cmake libharfbuzz-dev libfribidi-dev
+          sudo apt-get install -y libcurl4-openssl-dev cmake libharfbuzz-dev \
+            libfribidi-dev
+          
       - uses: r-lib/actions/setup-r@v2
         with:
           use-public-rspm: false
           r-version: "renv"
-      #- name: check proxy
-      #  run: Rscript -e 'Sys.getenv("https_proxy")'
-      
       - uses: r-lib/actions/setup-renv@v2
       - uses: r-lib/actions/check-r-package@v2
         with:
