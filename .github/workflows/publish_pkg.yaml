@@ -37,8 +37,6 @@ jobs:
       - uses: actions/checkout@v4
       - name: setup ssh creds
         # https://maxschmitt.me/posts/github-actions-ssh-key
-        env:
-          SSH_AUTH_SOCK: /tmp/ssh_agent.sock
         run: |
           mkdir -p /home/runner/.ssh
           echo "${{ secrets.SSH_KEY }}" > /home/runner/.ssh/github_actions
@@ -49,16 +47,14 @@ jobs:
           # ssh-add /home/runner/.ssh/github_actions
 
       - name: test ssh creds
-        env:
-          SSH_AUTH_SOCK: /tmp/ssh_agent.sock
         run: |
           ssh $SSH_UN@$DEPLOY_HOST -i /home/runner/.ssh/github_actions -f 'touch test.txt' 
 
-       - name: setup mountpoint
-         run: |
-           sudo apt-get update
-           sudo apt-get install -y sshfs
-           sudo mkdir /mnt/share_area
+      #  - name: setup mountpoint
+      #    run: |
+      #      sudo apt-get update
+      #      sudo apt-get install -y sshfs
+      #      sudo mkdir /mnt/share_area
           #  sudo sshfs \
           #   $SSH_UN@$DEPLOY_HOST:/projects/dsai/se_aa/statistical_innovation/ \
           #   /mnt/shared_area \
