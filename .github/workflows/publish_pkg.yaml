@@ -19,6 +19,7 @@ jobs:
       REMOTE_MINICRAN: /projects/dsai/se_aa/statistical_innovation/minicran/
       REMOTE_RENV_CACHE: /projects/dsai/se_aa/statistical_innovation/github_renv_cache
       RENV_PATHS_CACHE: ~/.renv_cache
+      R_SIPKGTOOLS_MAIN_REPO: ~/.minicran
       RENV_CONFIG_CACHE_SYMLINKS: false
       https_proxy: http://azpzen.astrazeneca.net:9480
       http_proxy: http://azpzen.astrazeneca.net:9480 
@@ -104,7 +105,26 @@ jobs:
         run: |
           rsync -avz -e "ssh -i /home/runner/.ssh/github_actions" \
             $SSH_UN@$DEPLOY_HOST:$REMOTE_MINICRAN ~/.minicran
-          ls ~/.minicran
           cat ~/.minicran/src/contrib/PACKAGES
+      - name: get sipkgtools
+        run: |
+          install.packages("sipkgtools", 
+            repo =
+            c("https://pages.scp.astrazeneca.net/aa/statistical_innovation/minicran",
+            getOption("repos"))
+          )
+        shell: Rscript {0}
+      - name: deploy package locally
+        run: |
+          sipkgtools::deploy_package(
+            dev_repo = NA,
+            path = "."
+          )
+        shell: Rscript {0}
+      - name: is it avail
+        run: |
+          cat ~/.minicran/src/contrib/PACKAGES
+
+
 
       
