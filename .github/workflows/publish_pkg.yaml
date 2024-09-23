@@ -47,21 +47,28 @@ jobs:
           # cat /home/runner/.ssh/known_hosts
           # ssh-agent -a $SSH_AUTH_SOCK > /dev/null	
           # ssh-add /home/runner/.ssh/github_actions
-          
 
-          ssh $SSH_UN@$DEPLOY_HOST -i /home/runner/.ssh/github_actions -f 'touch test.txt' 
       - name: test ssh creds
         env:
           SSH_AUTH_SOCK: /tmp/ssh_agent.sock
         run: |
-          ssh kctf809@login.seml.scp.astrazeneca.net -f 'ls'
+          ssh $SSH_UN@$DEPLOY_HOST -i /home/runner/.ssh/github_actions -f 'touch test.txt' 
 
 
-      # - name: setup mountpoint
-      #   run: |
-      #     sudo apt-get update
-      #     sudo apt-get install -y sshfs
-      #     which sshfs 
+       - name: setup mountpoint
+         run: |
+           sudo apt-get update
+           sudo apt-get install -y sshfs
+           sudo mkdir /mnt/share_area
+           sudo sshfs \
+            $SSH_UN@$DEPLOY_HOST:/projects/dsai/se_aa/statistical_innovation/ \
+            /mnt/shared_area \
+            -o IdentityFile=/home/runner/.ssh/github_actions
+           ls /mnt/share_area
+
+          
+
+
 
       # - uses: r-lib/actions/setup-pandoc@v2
       # - name: install dependencies
