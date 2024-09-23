@@ -44,7 +44,8 @@ jobs:
         with: 
           path: ~/.ssh
           key: ${{ runner.os }}-sshsetup-${{ secrets.ssh_UN }}
-      - name: setup ssh creds
+      - if: ${{ steps.cache-ssh.outputs.cache-hit != 'true' }}
+        name: setup ssh creds
         # https://maxschmitt.me/posts/github-actions-ssh-key
         run: |
           mkdir -p /home/runner/.ssh
