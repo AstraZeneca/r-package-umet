@@ -49,7 +49,7 @@ jobs:
           # ssh-add /home/runner/.ssh/github_actions
           
 
-          ssh -i /home/runner/.ssh/github_actions -f 'touch test.txt' $SSH_UN@$DEPLOY_HOST 
+          ssh $SSH_UN@$DEPLOY_HOST -i /home/runner/.ssh/github_actions -f 'touch test.txt' 
       - name: test ssh creds
         env:
           SSH_AUTH_SOCK: /tmp/ssh_agent.sock
