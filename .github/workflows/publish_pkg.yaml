@@ -57,9 +57,9 @@ jobs:
           # ssh-agent -a $SSH_AUTH_SOCK > /dev/null	
           # ssh-add /home/runner/.ssh/github_actions
 
-      - name: test ssh creds
-        run: |
-          ssh $SSH_UN@$DEPLOY_HOST -i /home/runner/.ssh/github_actions -f 'ls' 
+      # - name: test ssh creds
+      #   run: |
+      #     ssh $SSH_UN@$DEPLOY_HOST -i /home/runner/.ssh/github_actions -f 'ls' 
       # - name: setup mountpoint
       #   run: |
       #     sudo apt-get update
