@@ -15,6 +15,9 @@ jobs:
       GITHUB_PAT: ${{ secrets.GITHUB_TOKEN }}
       DEPLOY_HOST: ${{ secrets.DEPLOY_HOST }}
       SSH_UN: ${{ secrets.SSH_UN }}
+      REMOTE_RENV_CACHE: /projects/dsai/se_aa/statistical_innovation/github_renv_cache
+      RENV_PATHS_CACHE: /mnt/renv_cache
+      RENV_CONFIG_CACHE_SYMLINKS: false
       https_proxy: http://azpzen.astrazeneca.net:9480
       http_proxy: http://azpzen.astrazeneca.net:9480 
       no_proxy: localhost,127.0.0.1,127.0.0.2,.astrazeneca.net,astrazeneca.net    
@@ -56,9 +59,10 @@ jobs:
           sudo mkdir /mnt/share_area
           sudo sshfs \
             $SSH_UN@$DEPLOY_HOST:/projects/dsai/se_aa/statistical_innovation/ \
-            /mnt/shared_area \
+            /mnt/share_area \
             -o IdentityFile=/home/runner/.ssh/github_actions
           ls /mnt/share_area
+          sudo mkdir /mnt/renv_cache
 
           
 
