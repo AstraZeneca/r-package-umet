@@ -38,6 +38,9 @@ jobs:
           echo "Acquire::http::Proxy \"$http_proxy\";" | sudo tee -a /etc/apt/apt.conf
           echo "Acquire::https::Proxy \"$https_proxy\";" | sudo tee -a /etc/apt/apt.conf
       - uses: actions/checkout@v4
+      # - name: cache ssh 
+        # id: cache-ssh
+        # uses: actions/cache@v3
       - name: setup ssh creds
         # https://maxschmitt.me/posts/github-actions-ssh-key
         run: |
@@ -56,6 +59,7 @@ jobs:
         run: |
           sudo apt-get update
           sudo apt-get install -y sshfs
+          modprobe fuse
           sudo mkdir /mnt/share_area
           sudo sshfs \
             $SSH_UN@$DEPLOY_HOST:/projects/dsai/se_aa/statistical_innovation/ \
