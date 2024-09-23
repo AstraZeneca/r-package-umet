@@ -14,6 +14,7 @@ jobs:
     env:
       GITHUB_PAT: ${{ secrets.GITHUB_TOKEN }}
       DEPLOY_HOST: ${{ secrets.DEPLOY_HOST }}
+      SSH_UN: ${{ secrets.SSH_UN }}
       https_proxy: http://azpzen.astrazeneca.net:9480
       http_proxy: http://azpzen.astrazeneca.net:9480 
       no_proxy: localhost,127.0.0.1,127.0.0.2,.astrazeneca.net,astrazeneca.net    
@@ -40,18 +41,20 @@ jobs:
           SSH_AUTH_SOCK: /tmp/ssh_agent.sock
         run: |
           mkdir -p /home/runner/.ssh
-          ssh-keyscan -H $DEPLOY_HOST >> /home/runner/.ssh/known_hosts
           echo "${{ secrets.SSH_KEY }}" > /home/runner/.ssh/github_actions
           chmod 600 /home/runner/.ssh/github_actions
+          ssh-keyscan -H $DEPLOY_HOST >> /home/runner/.ssh/known_hosts
+          cat /home/runner/.ssh/known_hosts
           # ssh-agent -a $SSH_AUTH_SOCK > /dev/null	
           # ssh-add /home/runner/.ssh/github_actions
+          
 
-          ssh $DEPLOY_HOST -f 'touch test.txt'
+          ssh $SSH_UN@$DEPLOY_HOST -f 'touch test.txt'
       - name: test ssh creds
         env:
           SSH_AUTH_SOCK: /tmp/ssh_agent.sock
         run: |
-          ssh login.seml.scp.astrazeneca.net -f 'ls'
+          ssh kctf809login.seml.scp.astrazeneca.net -f 'ls'
 
 
       # - name: setup mountpoint
