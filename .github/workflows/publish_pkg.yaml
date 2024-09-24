@@ -105,7 +105,7 @@ jobs:
       - name: get sipkgtools
         run: |
           install.packages("sipkgtools", 
-            repo =
+            repos =
             c("https://pages.scp.astrazeneca.net/aa/statistical_innovation/minicran",
             getOption("repos"))
           )
