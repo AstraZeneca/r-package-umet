@@ -43,7 +43,7 @@ jobs:
       - uses: actions/checkout@v4
       - name: cache ssh 
         id: cache-ssh
-        uses: actions/cache@v3
+        uses: actions/cache@v4
         with: 
           path: ~/.ssh
           key: ${{ runner.os }}-sshsetup-${{ secrets.ssh_UN }}
@@ -93,7 +93,7 @@ jobs:
 
       - name: cache renv 
         id: cache-renv
-        uses: actions/cache@v3
+        uses: actions/cache@v4
         with: 
           path: ~/.renv_cache
           key: ${{ runner.os }}-renv_cache-${{ secrets.ssh_UN }}
