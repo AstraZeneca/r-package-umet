@@ -62,17 +62,17 @@ jobs:
       # - name: test ssh creds
       #   run: |
       #     ssh $SSH_UN@$DEPLOY_HOST -i /home/runner/.ssh/github_actions -f 'ls' 
-      # - name: setup mountpoint
-      #   run: |
-      #     sudo apt-get update
-      #     sudo apt-get install -y sshfs
+      - name: setup mountpoint
+        run: |
+          sudo apt-get update
+          sudo apt-get install -y sshfs
       #     sudo modprobe fuse
-      #     sudo mkdir /mnt/share_area
-      #     sudo sshfs \
-      #       $SSH_UN@$DEPLOY_HOST:/projects/dsai/se_aa/statistical_innovation/ \
-      #       /mnt/share_area \
-      #       -o IdentityFile=/home/runner/.ssh/github_actions
-      #     ls /mnt/share_area
+          mkdir ~/share_area
+          sshfs \
+            $SSH_UN@$DEPLOY_HOST:/projects/dsai/se_aa/statistical_innovation/ \
+            ~/share_area \
+            -o IdentityFile=/home/runner/.ssh/github_actions
+          ls ~/share_area
       #     sudo mkdir $RENV_PATHS_CACHE
       #     sudo sshfs \
       #       $SSH_UN@$DEPLOY_HOST:$REMOTE_RENV_CACHE \
