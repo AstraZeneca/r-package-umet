@@ -33,9 +33,9 @@ jobs:
     steps:
       # - name: System info
       #  run: cat /etc/os-release
-      # - name: Ping localhost
-      #   run: |
-      #     ping -c 3 login.seml.scp.astrazeneca.net 
+      - name: Ping localhost
+        run: |
+          ping -c 3 https://pages.scp.astrazeneca.net/aa/statistical_innovation/minicran 
       - name: Set up proxy environment variables
         run: |
           echo "Acquire::http::Proxy \"$http_proxy\";" | sudo tee -a /etc/apt/apt.conf
