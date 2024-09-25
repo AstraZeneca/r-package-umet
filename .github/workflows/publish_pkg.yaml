@@ -23,7 +23,7 @@ jobs:
       RENV_CONFIG_CACHE_SYMLINKS: false
       https_proxy: http://azpzen.astrazeneca.net:9480
       http_proxy: http://azpzen.astrazeneca.net:9480 
-      no_proxy: localhost,127.0.0.1,127.0.0.2,.astrazeneca.net,astrazeneca.net    
+      # no_proxy: localhost,127.0.0.1,127.0.0.2,.astrazeneca.net,astrazeneca.net    
       # default renv method of curl does not seem
       # to respect proxy settings
       # RENV_DOWNLOAD_METHOD: libcurl
