@@ -35,7 +35,7 @@ jobs:
       #  run: cat /etc/os-release
       - name: Ping localhost
         run: |
-          curl https://pages.seml.scp.astrazeneca.net/dsai/aa/statistical_innovation/minicran
+          curl https://pages.seml.scp.astrazeneca.net/dsai/aa/statistical_innovation/minicran/src/contrib
       - name: Set up proxy environment variables
         run: |
           echo "Acquire::http::Proxy \"$http_proxy\";" | sudo tee -a /etc/apt/apt.conf
@@ -102,14 +102,14 @@ jobs:
           rsync -avz -e "ssh -i /home/runner/.ssh/github_actions" \
             $SSH_UN@$DEPLOY_HOST:$REMOTE_MINICRAN ~/.minicran
           cat ~/.minicran/src/contrib/PACKAGES
-      # - name: get sipkgtools
-      #   run: |
-      #     install.packages("sipkgtools", 
-      #       repos =
-      #       c("https://pages.seml.scp.astrazeneca.net/dsai/aa/statistical_innovation/minicran",
-      #       getOption("repos"))
-      #     )
-      #   shell: Rscript {0}
+      - name: get sipkgtools
+        run: |
+          install.packages("sipkgtools", 
+            repos =
+            c("https://pages.seml.scp.astrazeneca.net/dsai/aa/statistical_innovation/minicran",
+            getOption("repos"))
+          )
+        shell: Rscript {0}
       - name: deploy package locally
         run: |
           sipkgtools::deploy_package(
