@@ -1005,6 +1005,12 @@
       ],
       "Hash": "6a293995a66e12c48d13aa1f957d09c7"
     },
+    "sipkgtools": {
+      "Package": "sipkgtools",
+      "Version": "0.4.0",
+      "Source": "Repository",
+      "Repository": "https://pages.seml.scp.astrazeneca.net/dsai/aa/statistical_innovation/minicran"
+    },
     "sourcetools": {
       "Package": "sourcetools",
       "Version": "0.1.7-1",
