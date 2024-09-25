@@ -106,7 +106,7 @@ jobs:
         run: |
           install.packages("sipkgtools", 
             repos =
-            c("https://pages.scp.astrazeneca.net/aa/statistical_innovation/minicran",
+            c("https://pages.seml.scp.astrazeneca.net/dsai/aa/statistical_innovation/minicran",
             getOption("repos"))
           )
         shell: Rscript {0}
