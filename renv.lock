@@ -9,11 +9,6 @@
     ]
   },
   "Packages": {
-    "Matrix": {
-      "Package": "Matrix",
-      "Version": "1.6-5",
-      "Source": "Repository"
-    },
     "R6": {
       "Package": "R6",
       "Version": "2.5.1",
@@ -848,13 +843,13 @@
     },
     "renv": {
       "Package": "renv",
-      "Version": "1.0.7",
+      "Version": "1.0.9",
       "Source": "Repository",
       "Repository": "CRAN",
       "Requirements": [
         "utils"
       ],
-      "Hash": "397b7b2a265bc5a7a06852524dabae20"
+      "Hash": "ef233f0e9064fc88c898b340c9add5c2"
     },
     "rlang": {
       "Package": "rlang",
@@ -1004,12 +999,6 @@
         "xtable"
       ],
       "Hash": "6a293995a66e12c48d13aa1f957d09c7"
-    },
-    "sipkgtools": {
-      "Package": "sipkgtools",
-      "Version": "0.4.0",
-      "Source": "Repository",
-      "Repository": "https://pages.seml.scp.astrazeneca.net/dsai/aa/statistical_innovation/minicran/"
     },
     "sourcetools": {
       "Package": "sourcetools",
