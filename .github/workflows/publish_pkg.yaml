@@ -16,7 +16,7 @@ jobs:
       DEPLOY_HOST: ${{ secrets.DEPLOY_HOST }}
       SSH_UN: ${{ secrets.SSH_UN }}
       # note trailing slash at the end of directory so rsync copies contents
-      REMOTE_MINICRAN: /projects/dsai/se_aa/statistical_innovation/minicran/
+      REMOTE_MINICRAN: /projects/dsai/public/public_html/aa/statistical_innovation/minicran
       REMOTE_RENV_CACHE: /projects/dsai/se_aa/statistical_innovation/github_renv_cache
       RENV_PATHS_CACHE: ~/.renv_cache
       R_SIPKGTOOLS_MAIN_REPO: ~/.minicran
@@ -106,7 +106,7 @@ jobs:
         run: |
           install.packages("sipkgtools", 
             repos =
-            c("https://pages.seml.scp.astrazeneca.net/aa/statistical_innovation/minicran",
+            c("/home/runner/.minicran",
             getOption("repos"))
           )
         shell: Rscript {0}
