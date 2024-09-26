@@ -119,6 +119,11 @@ jobs:
       - name: is it avail
         run: |
           cat ~/.minicran/src/contrib/PACKAGES
+      - name: sync back up 
+        run: |
+          rsync -avz -e "ssh -i /home/runner/.ssh/github_actions" \
+            ~/.minicran/ $SSH_UN@$DEPLOY_HOST:$REMOTE_MINICRAN
+      
 
 
 
