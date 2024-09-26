@@ -16,7 +16,7 @@ jobs:
       DEPLOY_HOST: ${{ secrets.DEPLOY_HOST }}
       SSH_UN: ${{ secrets.SSH_UN }}
       # note trailing slash at the end of directory so rsync copies contents
-      REMOTE_MINICRAN: /projects/dsai/public/public_html/aa/statistical_innovation/minicran
+      REMOTE_MINICRAN: /projects/dsai/public/public_html/aa/statistical_innovation/minicran/
       REMOTE_RENV_CACHE: /projects/dsai/se_aa/statistical_innovation/github_renv_cache
       RENV_PATHS_CACHE: ~/.renv_cache
       R_SIPKGTOOLS_MAIN_REPO: ~/.minicran
@@ -59,12 +59,6 @@ jobs:
           # cat /home/runner/.ssh/known_hosts
           # ssh-agent -a $SSH_AUTH_SOCK > /dev/null	
           # ssh-add /home/runner/.ssh/github_actions
-      - name: sync down minicran
-        run: |
-          rsync -avz -e "ssh -i /home/runner/.ssh/github_actions" \
-            $SSH_UN@$DEPLOY_HOST:$REMOTE_MINICRAN ~/.minicran
-          ls ~/.minicran
-          cat ~/.minicran/src/contrib/PACKAGES
       # - name: setup mountpoint
       #   run: |
       #     sudo apt-get update
@@ -107,14 +101,12 @@ jobs:
         run: |
           rsync -avz -e "ssh -i /home/runner/.ssh/github_actions" \
             $SSH_UN@$DEPLOY_HOST:$REMOTE_MINICRAN ~/.minicran
-          ls ~/.minicran
-          cat ~/.minicran/src/contrib/PACKAGES
       - name: get sipkgtools
         run: |
-          install.packages("sipkgtools", 
-            repos =
-            c("/home/runner/.minicran",
-            getOption("repos"))
+          install.packages(
+            "sipkgtools", 
+            repos = c("/home/runner/.minicran", getOption("repos")),
+            type = "source"
           )
         shell: Rscript {0}
       - name: deploy package locally
