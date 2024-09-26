@@ -35,7 +35,7 @@ jobs:
       #  run: cat /etc/os-release
       - name: Ping localhost
         run: |
-          curl -s https://pages.seml.scp.astrazeneca.net/dsai/aa/statistical_innovation/minicran/src/contrib/
+          curl -s https://pages.seml.scp.astrazeneca.net/aa/statistical_innovation/minicran/src/contrib/PACKAGES
       - name: Set up proxy environment variables
         run: |
           echo "Acquire::http::Proxy \"$http_proxy\";" | sudo tee -a /etc/apt/apt.conf
@@ -106,7 +106,7 @@ jobs:
         run: |
           install.packages("sipkgtools", 
             repos =
-            c("https://pages.seml.scp.astrazeneca.net/dsai/aa/statistical_innovation/minicran/",
+            c("https://pages.seml.scp.astrazeneca.net/aa/statistical_innovation/minicran",
             getOption("repos"))
           )
         shell: Rscript {0}
