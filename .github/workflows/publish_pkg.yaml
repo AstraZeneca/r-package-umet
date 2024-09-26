@@ -59,6 +59,12 @@ jobs:
           # cat /home/runner/.ssh/known_hosts
           # ssh-agent -a $SSH_AUTH_SOCK > /dev/null	
           # ssh-add /home/runner/.ssh/github_actions
+      - name: sync down minicran
+        run: |
+          rsync -avz -e "ssh -i /home/runner/.ssh/github_actions" \
+            $SSH_UN@$DEPLOY_HOST:$REMOTE_MINICRAN ~/.minicran
+          ls ~/.minicran
+          cat ~/.minicran/src/contrib/PACKAGES
       # - name: setup mountpoint
       #   run: |
       #     sudo apt-get update
@@ -101,6 +107,7 @@ jobs:
         run: |
           rsync -avz -e "ssh -i /home/runner/.ssh/github_actions" \
             $SSH_UN@$DEPLOY_HOST:$REMOTE_MINICRAN ~/.minicran
+          ls ~/.minicran
           cat ~/.minicran/src/contrib/PACKAGES
       - name: get sipkgtools
         run: |
