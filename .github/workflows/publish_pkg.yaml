@@ -50,7 +50,7 @@ jobs:
         uses: actions/cache@v4
         with: 
           path: ~/.ssh
-          key: ${{ runner.os }}-sshsetup-${{ hashFiles('/.ssh/**') }}
+          key: ${{ runner.os }}-sshsetup-${{ hashFiles('~/.ssh/**') }}
       - if: ${{ steps.cache-ssh.outputs.cache-hit != 'true' }}
         name: setup ssh creds
         # https://maxschmitt.me/posts/github-actions-ssh-key
