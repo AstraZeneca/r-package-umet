@@ -14,7 +14,6 @@ jobs:
     env:
       GITHUB_PAT: ${{ secrets.GITHUB_TOKEN }}
       DEPLOY_HOST: ${{ secrets.DEPLOY_HOST }}
-      SSH_UN: ${{ secrets.SSH_UN }}
       # note trailing slash at the end of directory so rsync copies contents
       REMOTE_MINICRAN: /projects/dsai/public/public_html/aa/statistical_innovation/minicran/
       REMOTE_RENV_CACHE: /projects/dsai/se_aa/statistical_innovation/github_renv_cache
@@ -33,9 +32,9 @@ jobs:
     steps:
       # - name: System info
       #  run: cat /etc/os-release
-      - name: Ping localhost
-        run: |
-          curl -s https://pages.seml.scp.astrazeneca.net/aa/statistical_innovation/minicran/src/contrib/PACKAGES
+      # - name: Ping localhost
+        # run: |
+          # curl -s https://pages.seml.scp.astrazeneca.net/aa/statistical_innovation/minicran/src/contrib/PACKAGES
       - name: Set up proxy environment variables
         run: |
           echo "Acquire::http::Proxy \"$http_proxy\";" | sudo tee -a /etc/apt/apt.conf
@@ -47,7 +46,7 @@ jobs:
         uses: actions/cache@v4
         with: 
           path: ~/.ssh
-          key: ${{ runner.os }}-sshsetup-${{ secrets.ssh_UN }}
+          key: ${{ runner.os }}-sshsetup-${{ secrets.SSH_KEY }}
       - if: ${{ steps.cache-ssh.outputs.cache-hit != 'true' }}
         name: setup ssh creds
         # https://maxschmitt.me/posts/github-actions-ssh-key
@@ -87,12 +86,12 @@ jobs:
           use-public-rspm: true
           r-version: "renv"
 
-      - name: cache renv 
-        id: cache-renv
-        uses: actions/cache@v4
-        with: 
-          path: ~/.renv_cache
-          key: ${{ runner.os }}-renv_cache-${{ secrets.ssh_UN }}
+      # - name: cache renv 
+        # id: cache-renv
+        # uses: actions/cache@v4
+        # with: 
+          # path: ~/.renv_cache
+          # key: ${{ runner.os }}-renv_cache-${{ secrets.ssh_UN }}
       - uses: r-lib/actions/setup-renv@v2
       - uses: r-lib/actions/check-r-package@v2
         with:
@@ -115,10 +114,10 @@ jobs:
             dev_repo = NA,
             path = "."
           )
-        shell: Rscript {0}
-      - name: is it avail
-        run: |
-          cat ~/.minicran/src/contrib/PACKAGES
+        # shell: Rscript {0}
+      # - name: is it avail
+        # run: |
+          # cat ~/.minicran/src/contrib/PACKAGES
       - name: sync back up 
         run: |
           rsync -avz -e "ssh -i /home/runner/.ssh/github_actions" \
