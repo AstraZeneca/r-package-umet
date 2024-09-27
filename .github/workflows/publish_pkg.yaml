@@ -41,18 +41,17 @@ jobs:
           echo "Acquire::https::Proxy \"$https_proxy\";" | sudo tee -a /etc/apt/apt.conf
           sudo apt-get update
       - uses: actions/checkout@v4
-      - name: save ssh key for hashing
-        run: |
-          mkdir -p /home/runner/.ssh
-          echo "${{ secrets.SSH_KEY }}" > /home/runner/.ssh/github_actions
-      - name: cache ssh 
-        id: cache-ssh
-        uses: actions/cache@v4
-        with: 
-          path: ~/.ssh
-          key: ${{ runner.os }}-sshsetup-${{ hashFiles('~/.ssh/**') }}
-      - if: ${{ steps.cache-ssh.outputs.cache-hit != 'true' }}
-        name: setup ssh creds
+      # - name: save ssh key for hashing
+        # run: |
+          # mkdir -p /home/runner/.ssh
+          # echo "${{ secrets.SSH_KEY }}" > /home/runner/.ssh/github_actions
+      # - name: cache ssh 
+        # id: cache-ssh
+        # uses: actions/cache@v4
+        # with: 
+          # path: ~/.ssh
+          # key: ${{ runner.os }}-sshsetup-${{ hashFiles('~/.ssh/**') }}
+      - name: setup ssh creds
         # https://maxschmitt.me/posts/github-actions-ssh-key
         run: |
           mkdir -p /home/runner/.ssh
