@@ -3,8 +3,7 @@ name: Internal Test
 on:
   push:
     branches:
-      - dev
-      - gh-workflow
+      - main
   workflow_dispatch:
 
 jobs:
