@@ -63,9 +63,9 @@ jobs:
           # ssh-agent -a $SSH_AUTH_SOCK > /dev/null	
           # ssh-add /home/runner/.ssh/github_actions
       - name: sync down minicran 2
-          run: |
-            rsync -avz -e "ssh -i /home/runner/.ssh/github_actions" \
-              $SSH_UN@$DEPLOY_HOST:$REMOTE_MINICRAN ~/.minicran
+        run: |
+          rsync -avz -e "ssh -i /home/runner/.ssh/github_actions" \
+            $SSH_UN@$DEPLOY_HOST:$REMOTE_MINICRAN ~/.minicran
       # - name: setup mountpoint
       #   run: |
       #     sudo apt-get update
