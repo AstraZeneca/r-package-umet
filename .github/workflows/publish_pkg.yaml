@@ -55,11 +55,17 @@ jobs:
         name: setup ssh creds
         # https://maxschmitt.me/posts/github-actions-ssh-key
         run: |
+          mkdir -p /home/runner/.ssh
+          echo "${{ secrets.SSH_KEY }}" > /home/runner/.ssh/github_actions
           chmod 600 /home/runner/.ssh/github_actions
           ssh-keyscan -H $DEPLOY_HOST >> /home/runner/.ssh/known_hosts
           # cat /home/runner/.ssh/known_hosts
           # ssh-agent -a $SSH_AUTH_SOCK > /dev/null	
           # ssh-add /home/runner/.ssh/github_actions
+      - name: sync down minicran 2
+          run: |
+            rsync -avz -e "ssh -i /home/runner/.ssh/github_actions" \
+              $SSH_UN@$DEPLOY_HOST:$REMOTE_MINICRAN ~/.minicran
       # - name: setup mountpoint
       #   run: |
       #     sudo apt-get update
