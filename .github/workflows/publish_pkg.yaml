@@ -1,0 +1,49 @@
+name: Internal Test
+
+on:
+  push:
+    branches:
+      - dev
+  workflow_dispatch:
+
+jobs:
+  publishpackage:
+    runs-on: azu-oncology-rd-self-hosted-linux
+    env:
+      GITHUB_PAT: ${{ secrets.GITHUB_TOKEN }}
+      https_proxy: http://azpzen.astrazeneca.net:9480
+      http_proxy: http://azpzen.astrazeneca.net:9480 
+      no_proxy: localhost,127.0.0.1,127.0.0.2,.astrazeneca.net,astrazeneca.net    
+      # default renv method of curl does not seem
+      # to respect proxy settings
+      # RENV_DOWNLOAD_METHOD: libcurl
+      RENV_CONFIG_SANDBOX_ENABLED: false
+    permissions:
+      contents: write
+    steps:
+      - name: System info
+        run: cat /etc/os-release
+      - name: Ping localhost
+        run: |
+          ping -c 3 login.seml.scp.astrazeneca.net 
+      - name: Set up proxy environment variables
+        run: |
+          echo "Acquire::http::Proxy \"$http_proxy\";" | sudo tee -a /etc/apt/apt.conf
+          echo "Acquire::https::Proxy \"$https_proxy\";" | sudo tee -a /etc/apt/apt.conf
+      - uses: actions/checkout@v4
+      - uses: r-lib/actions/setup-pandoc@v2
+      - name: install dependencies
+        run: |
+          sudo apt-get update
+          sudo apt-get install -y libcurl4-openssl-dev cmake libharfbuzz-dev libfribidi-dev
+      - uses: r-lib/actions/setup-r@v2
+        with:
+          use-public-rspm: false
+          r-version: "renv"
+      #- name: check proxy
+      #  run: Rscript -e 'Sys.getenv("https_proxy")'
+      
+      - uses: r-lib/actions/setup-renv@v2
+      - uses: r-lib/actions/check-r-package@v2
+        with:
+          error-on: '"error"'
