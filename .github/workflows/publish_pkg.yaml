@@ -114,9 +114,11 @@ jobs:
         shell: Rscript {0}
       - name: deploy package locally
         run: |
-          sipkgtools::deploy_package(
-            dev_repo = NA,
-            path = ".")
+          try(
+            sipkgtools::deploy_package(
+              dev_repo = NA,
+              path = ".")
+          )
         shell: Rscript {0}
       - name: sync back up 
         run: |
