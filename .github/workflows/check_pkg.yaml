@@ -1,0 +1,22 @@
+name: Check R Packages (with CA) AZ Internal
+
+on:
+  pull_request:
+    branches:
+      - main
+      - dev
+jobs:
+  pkg_check_internal:
+    runs-on: azu-oncology-rd-self-hosted-linux
+    env:
+      GITHUB_PAT: ${{ secrets.GITHUB_TOKEN }}
+      https_proxy: http://azpzen.astrazeneca.net:9480
+      http_proxy: http://azpzen.astrazeneca.net:9480
+      # default renv method of curl does not seem to respect proxy settings
+      RENV_DOWNLOAD_METHOD: libcurl
+    permissions:
+        contents: write
+    steps:
+      - uses: actions/checkout@v4
+      - uses: azu-oncology-rd/r-package-example.si/.github/actions/setup-r-and-deps@main
+      - uses: azu-oncology-rd/r-package-example.si/.github/actions/check-r-package@main

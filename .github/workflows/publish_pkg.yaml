@@ -1,6 +1,10 @@
 name: Internal Test
 
 on:
+  pull_request:
+    branches:
+      - main
+      - dev
   push:
     branches:
       - main
@@ -22,8 +26,8 @@ jobs:
       R_SIPKGTOOLS_MAIN_REPO: ~/.minicran
       RENV_CONFIG_CACHE_SYMLINKS: false
       https_proxy: http://azpzen.astrazeneca.net:9480
-      http_proxy: http://azpzen.astrazeneca.net:9480 
-      # no_proxy: localhost,127.0.0.1,127.0.0.2,.astrazeneca.net,astrazeneca.net    
+      http_proxy: http://azpzen.astrazeneca.net:9480
+      # no_proxy: localhost,127.0.0.1,127.0.0.2,.astrazeneca.net,astrazeneca.net
       # default renv method of curl does not seem
       # to respect proxy settings
       # RENV_DOWNLOAD_METHOD: libcurl
@@ -46,10 +50,10 @@ jobs:
         # run: |
           # mkdir -p /home/runner/.ssh
           # echo "${{ secrets.SSH_KEY }}" > /home/runner/.ssh/github_actions
-      # - name: cache ssh 
+      # - name: cache ssh
         # id: cache-ssh
         # uses: actions/cache@v4
-        # with: 
+        # with:
           # path: ~/.ssh
           # key: ${{ runner.os }}-sshsetup-${{ hashFiles('~/.ssh/**') }}
       - name: setup ssh creds
@@ -60,7 +64,7 @@ jobs:
           chmod 600 /home/runner/.ssh/github_actions
           ssh-keyscan -H $DEPLOY_HOST >> /home/runner/.ssh/known_hosts
           # cat /home/runner/.ssh/known_hosts
-          # ssh-agent -a $SSH_AUTH_SOCK > /dev/null	
+          # ssh-agent -a $SSH_AUTH_SOCK > /dev/null
           # ssh-add /home/runner/.ssh/github_actions
       # - name: setup mountpoint
       #   run: |
@@ -77,7 +81,7 @@ jobs:
       #     sudo sshfs \
       #       $SSH_UN@$DEPLOY_HOST:$REMOTE_RENV_CACHE \
       #       $RENV_PATHS_CACHE \
-      #       -o IdentityFile=/home/runner/.ssh/github_actions 
+      #       -o IdentityFile=/home/runner/.ssh/github_actions
 
       - uses: r-lib/actions/setup-pandoc@v2
       # - name: install dependencies
@@ -90,10 +94,10 @@ jobs:
           use-public-rspm: true
           r-version: "renv"
 
-      # - name: cache renv 
+      # - name: cache renv
         # id: cache-renv
         # uses: actions/cache@v4
-        # with: 
+        # with:
           # path: ~/.renv_cache
           # key: ${{ runner.os }}-renv_cache-${{ secrets.ssh_UN }}
       - uses: r-lib/actions/setup-renv@v2
@@ -107,7 +111,7 @@ jobs:
       - name: get sipkgtools
         run: |
           install.packages(
-            "sipkgtools", 
+            "sipkgtools",
             repos = c("/home/runner/.minicran", getOption("repos")),
             type = "source"
           )
@@ -120,12 +124,12 @@ jobs:
               path = ".")
           )
         shell: Rscript {0}
-      - name: sync back up 
+      - if: ${{ github.event_name == 'push' }}
+        name: sync back up
         run: |
           rsync -avz -e "ssh -i /home/runner/.ssh/github_actions" \
             ~/.minicran/ $SSH_UN@$DEPLOY_HOST:$REMOTE_MINICRAN
-      
 
 
 
-      
+
