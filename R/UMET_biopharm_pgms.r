@@ -106,9 +106,10 @@ tox_rat= round((((tox.hi)/n.hi)/((tox.lo)/n.lo)),5)
 #if 2 then high dose selected, if 1 low dose selected, if 0 consider dose 2 but explore more
 clin.sel_dose.truth=(2*as.numeric((eff_diff>=emp.eff.lo.thresh & tox_rat<emp.tox.lo.thresh)||(eff_diff>emp.eff.hi.thresh & emp.tox.lo.thresh<=tox_rat & tox_rat<=emp.tox.hi.thresh))) +
   (1*as.numeric((eff_diff<=emp.eff.hi.thresh & tox_rat>emp.tox.hi.thresh)||(eff_diff<emp.eff.lo.thresh & emp.tox.lo.thresh<=tox_rat & tox_rat<=emp.tox.hi.thresh)))+0
-gonogo.sel=   ifelse(clin.sel_dose.truth==2,
+clin.sel_dose.truth <- as.integer(clin.sel_dose.truth)
+gonogo.sel=   ifelse(clin.sel_dose.truth==2L,
                      "High dose",
-                     ifelse(clin.sel_dose.truth==1,
+                     ifelse(clin.sel_dose.truth==1L,
                             "Low dose","Consider high dose"))
 #this gives 100*original utility in the paper
 emp.dat<-data.frame(
