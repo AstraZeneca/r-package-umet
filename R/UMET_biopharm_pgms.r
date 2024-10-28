@@ -99,16 +99,17 @@ emp.table <- function(n.lo,n.hi,eff.hi,eff.lo,tox.hi,tox.lo,emp.eff.lo.thresh,em
     if (as.numeric(admiss.dose(n.hi,eff.hi, tox.hi,c_T,c_E,phi_T,phi_E,"high")["Keep dose (1=yes)",])==0) stop("High dose inadmissible")
   }
   #efficacy rate difference for clinical table
-eff_diff=((eff.hi)/n.hi-(eff.lo)/n.lo)
+eff_diff=round(((eff.hi)/n.hi-(eff.lo)/n.lo),5)
 #toxicity rate ratio for clinical table
-tox_rat= (((tox.hi)/n.hi)/((tox.lo)/n.lo))
+tox_rat= round((((tox.hi)/n.hi)/((tox.lo)/n.lo)),5)
 ######empirical table table from 3x3 table
 #if 2 then high dose selected, if 1 low dose selected, if 0 consider dose 2 but explore more
 clin.sel_dose.truth=(2*as.numeric((eff_diff>=emp.eff.lo.thresh & tox_rat<emp.tox.lo.thresh)||(eff_diff>emp.eff.hi.thresh & emp.tox.lo.thresh<=tox_rat & tox_rat<=emp.tox.hi.thresh))) +
   (1*as.numeric((eff_diff<=emp.eff.hi.thresh & tox_rat>emp.tox.hi.thresh)||(eff_diff<emp.eff.lo.thresh & emp.tox.lo.thresh<=tox_rat & tox_rat<=emp.tox.hi.thresh)))+0
-gonogo.sel=   ifelse(clin.sel_dose.truth==2,
+clin.sel_dose.truth <- as.integer(clin.sel_dose.truth)
+gonogo.sel=   ifelse(clin.sel_dose.truth==2L,
                      "High dose",
-                     ifelse(clin.sel_dose.truth==1,
+                     ifelse(clin.sel_dose.truth==1L,
                             "Low dose","Consider high dose"))
 #this gives 100*original utility in the paper
 emp.dat<-data.frame(
