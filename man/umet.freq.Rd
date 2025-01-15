@@ -15,8 +15,8 @@
 \item{tox.hi }{ integer (0<=tox.hi<=n.hi) specifying toxicity count of higher dose}
 \item{alpha1 }{ numeric value (0<alpha1<alpha2<1) prespecified significance level set for selection of high dose }
 \item{alpha2 }{ numeric value (0<alpha1< alpha2<1) specifying prespecified significance level set for selection of low dose }
-\item{u2 }{ integer (0<=u2<=100, u2+u3 <= 100) specifying utility score for no toxicity and no efficacy; u2+u3 = 100 is recommended }
-\item{u3 }{ integer (0<=u3<=100, u2+u3 <= 100) specifying utility score for toxicity and efficacy; u2+u3 = 100 is recommended }
+\item{u2 }{ integer (0<=u2<=100, u2+u3 = 100) specifying utility score for no toxicity and no efficacy; u2+u3 = 100 is recommended }
+\item{u3 }{ integer (0<=u3<=100, u2+u3 = 100) specifying utility score for toxicity and efficacy; u2+u3 = 100 is recommended }
  \item{check.admiss}{character value ("Yes"/"No") to check if doses are admissible and will only compare them if both are admissible}
   \item{c_T}{ numeric value (0<=c_T<=1) specifying probability threshold for toxicity to indicate if admissible, suggest 0.95; only need to enter value if check.admiss="Yes"}
   \item{c_E}{ numeric value (0<=c_E<=1) specifying probability threshold for efficacy to indicate if admissible, suggest 0.90; only need to enter value if check.admiss="Yes" }
