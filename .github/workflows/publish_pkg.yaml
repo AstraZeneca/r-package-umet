@@ -7,8 +7,6 @@ on:
   push:
     branches:
       - main
-  workflow_dispatch:
-
 jobs:
   publishpackage:
     runs-on: azu-oncology-rd-self-hosted-linux
@@ -32,8 +30,8 @@ jobs:
       - uses: azu-oncology-rd/si-github-r-tools/actions/setup-r-and-deps@v1
       - uses: azu-oncology-rd/si-github-r-tools/actions/build-and-deploy-r-package@v1
         with:
-          SSH_USER: ${{ secrets.SSH_USER }}
-          SSH_HOST: ${{ secrets.SSH_HOST }}
+          SSH_USER: ${{ secrets.SSH_UN }}
+          SSH_HOST: ${{ secrets.DEPLOY_HOST }}
           SSH_ID_FILE: ${{ steps.ssh.outputs.ssh-id-file }}
           # make sure there is a trailing slash
           REMOTE_MINICRAN: /projects/dsai/public/public_html/aa/si/minicran/

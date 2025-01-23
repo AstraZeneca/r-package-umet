@@ -4,7 +4,6 @@ on:
   pull_request:
     branches:
       - main
-  workflow_dispatch:
 jobs:
   pkg_check_internal:
     runs-on: azu-oncology-rd-self-hosted-linux
