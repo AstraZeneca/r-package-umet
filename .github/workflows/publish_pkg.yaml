@@ -4,111 +4,36 @@ on:
   pull_request:
     branches:
       - main
-      - dev
   push:
     branches:
       - main
-      - gh-workflow
-  workflow_dispatch:
-
 jobs:
   publishpackage:
     runs-on: azu-oncology-rd-self-hosted-linux
     environment: deploy-package
     env:
       GITHUB_PAT: ${{ secrets.GITHUB_TOKEN }}
-      DEPLOY_HOST: ${{ secrets.DEPLOY_HOST }}
-      SSH_UN: ${{ secrets.SSH_UN }}
-      # note trailing slash at the end of directory so rsync copies contents
-      REMOTE_MINICRAN: /projects/dsai/public/public_html/aa/statistical_innovation/minicran/
-      REMOTE_RENV_CACHE: /projects/dsai/se_aa/statistical_innovation/github_renv_cache
-      RENV_PATHS_CACHE: ~/.renv_cache
-      R_SIPKGTOOLS_MAIN_REPO: ~/.minicran
-      RENV_CONFIG_CACHE_SYMLINKS: false
       https_proxy: http://azpzen.astrazeneca.net:9480
-      http_proxy: http://azpzen.astrazeneca.net:9480
-      # no_proxy: localhost,127.0.0.1,127.0.0.2,.astrazeneca.net,astrazeneca.net
-      # default renv method of curl does not seem
-      # to respect proxy settings
-      # RENV_DOWNLOAD_METHOD: libcurl
-      RENV_CONFIG_SANDBOX_ENABLED: false
+      http_proxy: http://azpzen.astrazeneca.net:9480 
+      RENV_DOWNLOAD_METHOD: libcurl
     permissions:
-      contents: write
+        contents: write
     steps:
-      # - name: System info
-      #  run: cat /etc/os-release
-      # - name: Ping localhost
-        # run: |
-          # curl -s https://pages.seml.scp.astrazeneca.net/aa/statistical_innovation/minicran/src/contrib/PACKAGES
-      - name: Set up proxy environment variables
-        run: |
-          echo "Acquire::http::Proxy \"$http_proxy\";" | sudo tee -a /etc/apt/apt.conf
-          echo "Acquire::https::Proxy \"$https_proxy\";" | sudo tee -a /etc/apt/apt.conf
-          sudo apt-get update
       - uses: actions/checkout@v4
-      # - name: save ssh key for hashing
-        # run: |
-          # mkdir -p /home/runner/.ssh
-          # echo "${{ secrets.SSH_KEY }}" > /home/runner/.ssh/github_actions
-      # - name: cache ssh
-        # id: cache-ssh
-        # uses: actions/cache@v4
-        # with:
-          # path: ~/.ssh
-          # key: ${{ runner.os }}-sshsetup-${{ hashFiles('~/.ssh/**') }}
-      - name: setup ssh creds
-        # https://maxschmitt.me/posts/github-actions-ssh-key
-        run: |
-          mkdir -p /home/runner/.ssh
-          echo "${{ secrets.SSH_KEY }}" > /home/runner/.ssh/github_actions
-          chmod 600 /home/runner/.ssh/github_actions
-          ssh-keyscan -H $DEPLOY_HOST >> /home/runner/.ssh/known_hosts
-          # cat /home/runner/.ssh/known_hosts
-          # ssh-agent -a $SSH_AUTH_SOCK > /dev/null
-          # ssh-add /home/runner/.ssh/github_actions
-      # - name: setup mountpoint
-      #   run: |
-      #     sudo apt-get update
-      #     sudo apt-get install -y sshfs
-      #     mkdir ~/share_area
-      #     sshfs --version
-      #     sshfs \
-      #       $SSH_UN@$DEPLOY_HOST:/projects/dsai/se_aa/statistical_innovation/ \
-      #       ~/share_area \
-      #       -o IdentityFile=/home/runner/.ssh/github_actions
-      #     ls ~/share_area
-      #     sudo mkdir $RENV_PATHS_CACHE
-      #     sudo sshfs \
-      #       $SSH_UN@$DEPLOY_HOST:$REMOTE_RENV_CACHE \
-      #       $RENV_PATHS_CACHE \
-      #       -o IdentityFile=/home/runner/.ssh/github_actions
-      - uses: azu-oncology-rd/r-package-example.si/.github/actions/setup-r-and-deps@main
-      - name: sync down minicran
-        run: |
-          rsync -avz -e "ssh -i /home/runner/.ssh/github_actions" \
-            $SSH_UN@$DEPLOY_HOST:$REMOTE_MINICRAN ~/.minicran
-      - name: get sipkgtools
-        run: |
-          install.packages(
-            "sipkgtools",
-            repos = c("/home/runner/.minicran", getOption("repos")),
-            type = "source"
-          )
-        shell: Rscript {0}
-      - name: deploy package locally
-        run: |
-          try(
-            sipkgtools::deploy_package(
-              dev_repo = NA,
-              path = ".")
-          )
-        shell: Rscript {0}
-      - if: ${{ github.event_name == 'push' }}
-        name: sync back up
-        run: |
-          rsync -avz -e "ssh -i /home/runner/.ssh/github_actions" \
-            ~/.minicran/ $SSH_UN@$DEPLOY_HOST:$REMOTE_MINICRAN
-
-
-
-
+      - id: ssh
+        uses: azu-oncology-rd/si-github-r-tools/actions/setup-ssh@v1
+        with:
+          SSH_USER: ${{ secrets.SSH_UN }}
+          SSH_HOST: ${{ secrets.DEPLOY_HOST }}
+          SSH_KEY: ${{ secrets.SSH_KEY }}
+          test-connection: false
+      - uses: azu-oncology-rd/si-github-r-tools/actions/setup-r-and-deps@v1
+      - uses: azu-oncology-rd/si-github-r-tools/actions/build-and-deploy-r-package@v1
+        with:
+          SSH_USER: ${{ secrets.SSH_UN }}
+          SSH_HOST: ${{ secrets.DEPLOY_HOST }}
+          SSH_ID_FILE: ${{ steps.ssh.outputs.ssh-id-file }}
+          # make sure there is a trailing slash
+          REMOTE_MINICRAN: /projects/dsai/public/public_html/aa/si/minicran/
+          dry-run: ${{ github.event_name != 'push' }}
+          REMOTE_URL: https://pages.seml.scp.astrazeneca.net/aa/si/minicran
