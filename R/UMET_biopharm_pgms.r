@@ -3,6 +3,7 @@
 # U-MET frequentist method : umet.freq function
 # U-MET bayes method in paper using exact beta difference: umet.bayes function
 # admissible function to decide if doses are admissible and should be compared: admiss.dose function
+####fixed bug to force u2+u3=100 in umet.bayes and umet.freq
 #####
 
 #references
@@ -169,7 +170,7 @@ umet.freq <- function(n.lo,eff.lo,tox.lo,n.hi,eff.hi,tox.hi,alpha1,alpha2,u2,u3,
   if (u2<0 || u2>100) stop("Error: check if 0<=u2<=100")
   if (u3!=round(u3)) stop("Error: u3 should be an integer")
   if (u3<0 || u3>100) stop("Error: check if 0<=u3<=100")
-  if (u2+u3>100) stop("Error: check if u2+u3<=100")
+  if (u2+u3!=100) stop("Error: check if u2+u3=100")
   if (!check.admiss%in% c("Yes","No")) stop("Error: check.admiss should be Yes or No")
   if(check.admiss=="No") {c_T=0
                          c_E=0
@@ -219,7 +220,7 @@ umet.freq <- function(n.lo,eff.lo,tox.lo,n.hi,eff.hi,tox.hi,alpha1,alpha2,u2,u3,
 #C1 =  decision criteria for high dose, 1-alpha1
 #C2 = decision criteria for low dose, 1-alpha2
 #u2 = utility score for no toxicity and no efficacy
-#u3 = utility score for toxicity and efficacy; u2+u3 <= 100, recommended to have u2+u3 = 100
+#u3 = utility score for toxicity and efficacy; u2+u3 = 100, recommended to have u2+u3 = 100
 #' @export
 umet.bayes <- function(n.lo,n.hi, eff.lo, tox.lo, eff.hi, tox.hi,
                             delta1,alpha1,alpha2, C1, C2,u2, u3,check.admiss,c_T,c_E,phi_T,phi_E){
@@ -246,7 +247,7 @@ umet.bayes <- function(n.lo,n.hi, eff.lo, tox.lo, eff.hi, tox.hi,
   if (u2<0 || u2>100) stop("Error: check if 0<=u2<=100")
   if (u3!=round(u3)) stop("Error: u3 should be an integer")
   if (u3<0 || u3>100) stop("Error: check if 0<=u3<=100")
-  if (u2+u3>100) stop("Error: check if u2+u3<=100")
+  if (u2+u3!=100) stop("Error: check if u2+u3=100")
   if (!check.admiss%in% c("Yes","No")) stop("Error: check.admiss should be Yes or No")
   if(check.admiss=="No") {c_T=0
                          c_E=0

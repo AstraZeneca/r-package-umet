@@ -4,7 +4,6 @@ on:
   pull_request:
     branches:
       - main
-      - dev
 jobs:
   pkg_check_internal:
     runs-on: azu-oncology-rd-self-hosted-linux
@@ -18,5 +17,5 @@ jobs:
         contents: write
     steps:
       - uses: actions/checkout@v4
-      - uses: azu-oncology-rd/r-package-example.si/.github/actions/setup-r-and-deps@main
-      - uses: azu-oncology-rd/r-package-example.si/.github/actions/check-r-package@main
+      - uses: azu-oncology-rd/si-github-r-tools/actions/setup-r-and-deps@v1
+      - uses: azu-oncology-rd/si-github-r-tools/actions/check-r-package@v1
