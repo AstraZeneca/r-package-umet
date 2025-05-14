@@ -18,4 +18,4 @@ Author: Gina D'Angelo
 R version 4.3.1
 
 ## Citation
-D’Angelo G, Gong M, Marshall J, Yuan Y, Li X. U-MET: Utility-Based Dose Optimization Approach for Multiple-Dose Randomized Trial Designs. Statistics in Biopharmaceutical Research. 2024;1–11doi:DOI: 10.1080/19466315.2024.2365630
+D’Angelo G, Gong M, Marshall J, Yuan Y, Li X. U-MET: Utility-Based Dose Optimization Approach for Multiple-Dose Randomized Trial Designs. Statistics in Biopharmaceutical Research. 2024; 1–11, DOI: 10.1080/19466315.2024.2365630
